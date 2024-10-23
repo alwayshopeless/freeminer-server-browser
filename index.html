@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>Freeminer - Play MineCraft-like Voxel Game in Browser | WebAssembly Fork of Minetest</title>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Freeminer - Browser-based Voxel Game | Play Like MineCraft Online">
+    <meta name="description" content="Play Freeminer directly in your browser! A free, open-source voxel game powered by WebAssembly. Build, craft, and explore in this Minetest fork with MineCraft-like mechanics. No downloads needed.">
+    <meta name="keywords" content="Freeminer, browser game, voxel game, Minetest fork, WebAssembly game, MineCraft alternative, online building game, free minecraft-like game">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Freeminer - Build & Craft in Your Browser">
+    <meta property="og:description" content="Free MineCraft-like voxel game playable directly in browser. Build, explore, and craft in this WebAssembly-powered Minetest fork. No installation required!">
+    <!-- <meta property="og:image" content="[URL to game screenshot]"> -->
+
+    <!-- Twitter -->
+    <!-- <meta property="twitter:card" content="summary_large_image"> -->
+    <meta property="twitter:title" content="Freeminer - Browser-Based Voxel Adventure">
+    <meta property="twitter:description" content="Play this MineCraft-inspired voxel game right in your browser! Built with WebAssembly, fork of Minetest. Create, explore, and build - no downloads needed.">
+    <!-- <meta property="twitter:image" content="[URL to game screenshot]"> -->
+
+    <!-- Technical Meta Tags -->
+    <meta name="application-name" content="Freeminer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="robots" content="index, follow">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+
+</head>
+<body :class="theme" class="theme-bg transition-all duration-300">
+    <div id="app">
+        <!-- Theme Switch -->
+        <button @click="toggleTheme" class="theme-switch gradient-button">
+            <span v-if="theme === 'light-theme'" class="text-xl">🌙</span>
+            <span v-else class="text-xl">☀️</span>
+        </button>
+
+        <!-- Hero Section -->
+        <div class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="/assets/screenshots/cave.png" alt="Freeminer Landscape" class="w-full h-full object-cover opacity-60" />
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-90"></div>
+            </div>
+            <div class="container mx-auto px-4 relative z-10 text-center">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 text-white neon-text">FREEMINER</h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-8">Explore. Build. Create. Your world awaits.</p>
+                <a href="#servers" class="gradient-button text-white px-8 py-4 rounded-full text-xl font-bold inline-flex items-center space-x-3 hover:opacity-90 mb-16">
+                    <span>Download Now</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </a>
+            </div>
+            <!-- Animated scroll down arrow -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <a href="#servers" class="text-white flex flex-col items-center">
+                    <span class="text-sm mb-2">PLAY NOW</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="py-20 bg-opacity-90">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Feature Image 1 -->
+                    <div class="relative h-[400px] rounded-2xl overflow-hidden gaming-card">
+                        <img src="/assets/screenshots/blur.png" alt="Infinite World" class="w-full h-full object-cover" />
+                        <div class="absolute inset-0 screen-grad"></div>
+                        <div class="absolute bottom-0 p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Infinite Worlds</h3>
+                            <p class="text-gray-200">Explore vast landscapes spanning ±2147483647 blocks in all directions</p>
+                        </div>
+                    </div>
+                    <!-- Feature Image 2 -->
+                    <div class="relative h-[400px] rounded-2xl overflow-hidden gaming-card">
+                        <img src="/assets/screenshots/backrooms-1.png" alt="Enhanced View" class="w-full h-full object-cover" />
+                        <div class="absolute inset-0 screen-grad"></div>
+                        <div class="absolute bottom-0 p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Enhanced View Range</h3>
+                            <p class="text-gray-200">Experience 1000x better view distance than ever before</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servers Section -->
+        <div id="servers" class="container mx-auto px-4 py-8">
+            <div class="header-gradient rounded-2xl shadow-lg p-8 mb-8 text-white relative">
+                <h1 class="text-4xl font-bold mb-4 neon-text">FREEMINER SERVERS</h1>
+                <p class="text-xl opacity-90">Join the adventure</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="gaming-card rounded-xl p-6 neon-border">
+                    <h2 class="text-lg font-semibold mb-2">Total Servers</h2>
+                    <p class="text-4xl font-bold text-orange-500 neon-text">{{ totalServers }}</p>
+                </div>
+                <div class="gaming-card rounded-xl p-6 neon-border">
+                    <h2 class="text-lg font-semibold mb-2">Active Players</h2>
+                    <p class="text-4xl font-bold text-orange-500 neon-text">{{ totalClients }}</p>
+                </div>
+                <div class="gaming-card rounded-xl p-6 neon-border">
+                    <h2 class="text-lg font-semibold mb-2">Server Status</h2>
+                    <p class="text-4xl font-bold text-orange-500 neon-text">ONLINE</p>
+                </div>
+            </div>
+
+            <div class="gaming-card rounded-xl overflow-hidden">
+                <div class="p-6">
+                    <input 
+                        v-model="search" 
+                        class="gaming-input w-full px-6 py-3 rounded-xl focus:outline-none transition-all duration-200"
+                        placeholder="Search servers..."
+                    >
+                </div>
+                <div class="hidden md:block overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Description</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Players</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Version</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr v-for="server in filteredServers" 
+                                    :key="server.address" 
+                                    class="table-row transition-all duration-150">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span 
+                                            class="status-indicator"
+                                            :style="{ backgroundColor: server.clients > 0 ? 'var(--accent-color)' : '#666' }">
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-medium">{{ server.name }}</div>
+                                        <div class="text-sm opacity-75">{{ server.address }}:{{ server.port }}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm max-w-md">{{ server.description }}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-3 py-1 inline-flex text-sm font-semibold rounded-full bg-orange-100 text-orange-800">
+                                            {{ server.clients }}/{{ server.clients_max }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-3 py-1 inline-flex text-sm font-semibold rounded-full bg-red-100 text-red-800">
+                                            {{ server.version }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a 
+                                            :href="getPlayLink(server)"
+                                            target="_blank"
+                                            class="gradient-button text-white px-6 py-2 rounded-full font-medium inline-flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span>PLAY NOW</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:hidden grid server-grid gap-6 mt-4">
+                <div v-for="server in filteredServers" :key="server.address" class="gaming-card rounded-xl p-4 text-gray-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="status-indicator" :style="{ backgroundColor: server.clients > 0 ? '#ff6b6b' : '#666' }"></span>
+                            <h3 class="font-medium">{{ server.name }}</h3>
+                        </div>
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full bg-orange-900 text-orange-200">
+                            {{ server.clients }}/{{ server.clients_max }}
+                        </span>
+                    </div>
+                    
+                    <div class="text-sm text-gray-400 mb-2">{{ server.address }}:{{ server.port }}</div>
+                    <div class="text-sm mb-4">{{ server.description }}</div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full bg-red-900 text-red-200">
+                            {{ server.version }}
+                        </span>
+                        <a :href="getPlayLink(server)" target="_blank" class="gradient-button text-white px-4 py-2 rounded-full text-sm font-medium inline-flex items-center space-x-2">
+                            <span>PLAY NOW</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section with Image -->
+        <div class="container mx-auto px-4 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="relative h-[500px] rounded-2xl overflow-hidden gaming-card">
+                    <img src="/assets/screenshots/gameplay.png" alt="Freeminer Gameplay" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 screen-grad to-transparent"></div>
+                </div>
+                <div class="gaming-card rounded-xl p-8">
+                    <h2 class="text-4xl font-bold mb-6 neon-text">About Freeminer</h2>
+                    <p class="text-lg mb-4">A Minecraft-inspired sandbox game that pushes the boundaries of what's possible in voxel gaming.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Based on Minetest/Luanti with global contributor support</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>10x faster and more reliable networking</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Playable directly in your browser</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-12 gaming-card rounded-xl p-6">
+                       <div class="text-center">
+                           <p class="mb-2 font-semibold">⚠️ Disclaimer</p>
+                           <p class="opacity-90 mb-4">
+                               This is not an official Freeminer server broowser. For the official website and downloads, please visit:
+                           </p>
+                           <a 
+                               href="https://freeminer.org/" 
+                               target="_blank" 
+                               class="gradient-button text-white px-6 py-2 rounded-full font-medium inline-flex items-center space-x-2 hover:opacity-90 transition-opacity">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                   <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd" />
+                               </svg>
+                               <span>Official Freeminer Website</span>
+                           </a>
+                       </div>
+                   </footer>
+    </div>
+
+    <script src="/app.js">
+
+      
+    </script>
+</body>
+</html>
