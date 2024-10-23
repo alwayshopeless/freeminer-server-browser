@@ -1,1 +1,1 @@
-Freeminer server browser template
+Freeminer server browser templat :)
