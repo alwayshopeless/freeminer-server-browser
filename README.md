@@ -1,0 +1,1 @@
+Freeminer server browser template
